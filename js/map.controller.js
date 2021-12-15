@@ -61,7 +61,7 @@ function renderLocs() {
                 <li><button class="act-btn" onclick="onUpdateLoc('${loc.id}')">Update!</button></li>
                 </div>
            </ul>`
-            })
+            }).join('')
             document.querySelector('.my-saved-locations').innerHTML = strHtml
         })
 }
