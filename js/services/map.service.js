@@ -1,6 +1,8 @@
 "use strict";
 
 import { controller } from "../map.controller.js";
+import { locService } from "./loc.service.js";
+import { utilsService } from "./utils.js";
 
 export const mapService = {
   initMap,
@@ -8,10 +10,14 @@ export const mapService = {
   panTo,
   sendLocation,
   closeInfoWindow,
+  initMarkers,
+
 };
 
 var gMap;
 var currInfoWindow;
+var gMarkers = [];
+
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
   controller.renderLocs();
@@ -56,18 +62,20 @@ function closeInfoWindow() {
 }
 
 function addMarker(loc) {
-  // const locs = locService.getPositions()
-  // if (!locs || !locs.length) return
   var marker = new google.maps.Marker({
     draggable: true,
     position: loc,
+    id: utilsService.makeId(),
     map: gMap,
     title: "Hello World!",
   });
   marker.addListener("click", toggleBounce);
 
+  marker.addListener("dblclick", () => {
+   locService.updateLoc(marker.position)
+  });
 
-  console.log("marker", marker);
+  gMarkers.push(marker)
   return marker;
 
   function toggleBounce() {
@@ -101,6 +109,10 @@ function editInfoWindow(pos) {
   return `<ul class="info-list">
              <li>New location</li>
              <li><button class="save-btn" onclick="onSaveLocation({lat:${pos.lat},lng: ${pos.lng}})">Save Place</button></li></ul>`;
+}
+
+function initMarkers(locs){
+  locs.forEach(loc => addMarker({ lat: loc.lat, lng: loc.lng }, loc.id))
 }
 
 function sendLocation(val) {

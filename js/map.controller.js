@@ -20,9 +20,10 @@ window.onUpdateLoc = onUpdateLoc;
 
 function onInit() {
     mapService.initMap()
-        .then(() => {
-            console.log('Map is ready');
-        })
+    .then(() => {
+        locService.getLocs()
+            .then(mapService.initMarkers)
+    })
         .catch(() => console.log('Error: cannot init map'));
     renderLocs()
 }
@@ -70,8 +71,6 @@ function onGetUserPos() {
         .then(pos => {
             console.log('User position is:', pos.coords);
             mapService.panTo(pos.coords.latitude, pos.coords.longitude)
-            // document.querySelector('.user-pos').innerText =
-            //     `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
         })
         .catch(err => {
             console.log('err!!!', err);
@@ -95,31 +94,16 @@ function onSaveLocation(pos) {
 function onSendSearch(val) {
     mapService.sendLocation(val)
     document.querySelector('.user-pos').innerText = val.toUpperCase()
-    
-
 }
 
 function onDeleteLoc(id) {
     locService.deleteLoc(id)
 }
 
-function showWeather(lat, lng) {
-    console.log(lat, lng);
-    const WETH_API = '8bc7630ddf68a35c9313c636ce4993ac'
-    // fix
-    return axios.get(`api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${WETH_API}`)
-        .then(res => {
-            console.log(res.data);
-        })
-}
-
-
 function onUpdateLoc(id) {
     var date = new Date().toUTCString()
     locService.updateLoc(id, date)
 }
-
-
 
 document.querySelector('#pac-input').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
