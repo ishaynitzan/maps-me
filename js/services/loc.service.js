@@ -26,15 +26,6 @@ async function getLocs() {
     console.log("err", err);
   }
 }
-// function getLocs() {
-//     let locations = storageService.load(LOC_KEY)
-//     if (locations || location.length) return Promise.all(locations)
-//     return new Promise((resolve, reject) => {
-//         setTimeout(() => {
-//             resolve(locs);
-//         }, 2000)
-//     });
-// }
 
 function saveLocation(loc) {
   let placeName = prompt("Where are We?");
@@ -44,7 +35,6 @@ function saveLocation(loc) {
     id: utilsService.makeId(),
     lat: loc.lat,
     lng: loc.lng,
-    // weather,
     createdAt: new Date().toUTCString(),
     updatedAt: new Date().toUTCString(),
   };

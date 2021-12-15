@@ -2,6 +2,8 @@
 
 
 import { controller } from "../map.controller.js";
+import { locService } from "./loc.service.js";
+import { utilsService } from "./utils.js";
 
 export const mapService = {
   initMap,
@@ -62,15 +64,16 @@ function closeInfoWindow(){
 }
 
 function addMarker(loc) {
-  // const locs = locService.getPositions()
-  // if (!locs || !locs.length) return
   var marker = new google.maps.Marker({
     position: loc,
+    id: utilsService.makeId(),
     map: gMap,
     title: "Hello World!",
   });
+  marker.addListener("dblclick", () => {
+   locService.updateLoc(marker.position)
+  });
 
-  console.log("marker", marker);
   gMarkers.push(marker)
   return marker;
 }
