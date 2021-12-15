@@ -20,9 +20,10 @@ window.onUpdateLoc = onUpdateLoc;
 
 function onInit() {
     mapService.initMap()
-        .then(() => {
-            console.log('Map is ready');
-        })
+    .then(() => {
+        locService.getLocs()
+            .then(mapService.initMarkers)
+    })
         .catch(() => console.log('Error: cannot init map'));
     renderLocs()
 }

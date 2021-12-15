@@ -8,11 +8,15 @@ export const mapService = {
   addMarker,
   panTo,
   sendLocation,
-  closeInfoWindow
+  closeInfoWindow,
+  initMarkers,
+
 };
 
 var gMap;
 var currInfoWindow;
+var gMarkers = [];
+
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
   controller.renderLocs();
@@ -67,6 +71,7 @@ function addMarker(loc) {
   });
 
   console.log("marker", marker);
+  gMarkers.push(marker)
   return marker;
 }
 
@@ -94,6 +99,10 @@ function editInfoWindow(pos) {
   return `<ul class="info-list">
              <li>New location</li>
              <li><button class="save-btn" onclick="onSaveLocation({lat:${pos.lat},lng: ${pos.lng}})">Save Place</button></li></ul>`;
+}
+
+function initMarkers(locs){
+  locs.forEach(loc => addMarker({ lat: loc.lat, lng: loc.lng }, loc.id))
 }
 
 function sendLocation(val) {

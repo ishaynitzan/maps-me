@@ -101,9 +101,10 @@ header {
 }
 
 
-ul li{
+ul{
     list-style: none;
-    align-items: center;
+    padding-left: 0px;
+    /* align-items: center; */
 }
 
 
