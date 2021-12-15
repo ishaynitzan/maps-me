@@ -1,6 +1,5 @@
 "use strict";
 
-
 import { controller } from "../map.controller.js";
 
 export const mapService = {
@@ -8,7 +7,7 @@ export const mapService = {
   addMarker,
   panTo,
   sendLocation,
-  closeInfoWindow
+  closeInfoWindow,
 };
 
 var gMap;
@@ -31,7 +30,6 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
       position: myLatLng,
     });
 
-
     infoWindow.open(gMap);
     // Configure the click listener.
     gMap.addListener("click", (mapsMouseEvent) => {
@@ -44,7 +42,7 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
       infoWindow.close();
       // Create a new InfoWindow.
       infoWindow = new google.maps.InfoWindow({
-        position: mapsMouseEvent.latLng
+        position: mapsMouseEvent.latLng,
       });
       currInfoWindow = infoWindow;
       infoWindow.setContent(info);
@@ -53,21 +51,30 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
   });
 }
 
-function closeInfoWindow(){
-    currInfoWindow.close()
+function closeInfoWindow() {
+  currInfoWindow.close();
 }
 
 function addMarker(loc) {
   // const locs = locService.getPositions()
   // if (!locs || !locs.length) return
   var marker = new google.maps.Marker({
+    draggable: true,
     position: loc,
     map: gMap,
     title: "Hello World!",
   });
+  marker.addListener("click", toggleBounce);
+
 
   console.log("marker", marker);
   return marker;
+
+  function toggleBounce() {
+
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+      setTimeout(()=>{marker.setAnimation()}, 2000,null);
+      }
 }
 
 function panTo(lat, lng) {
